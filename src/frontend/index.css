@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* ── Amala Organics Brand Tokens (OKLCH L C H) ── */
+    /* Deep Forest Green: #0f3d2e → approx oklch(0.26 0.08 155) */
+    --forest: 0.26 0.08 155;
+    /* Soft Cream: #f5f1e8 → approx oklch(0.96 0.018 90) */
+    --cream: 0.96 0.018 90;
+    /* Gold Accent: #c6a85b → approx oklch(0.72 0.10 80) */
+    --gold: 0.72 0.10 80;
+    /* Light Sage: #dfe8dc → approx oklch(0.91 0.025 148) */
+    --sage: 0.91 0.025 148;
+    /* Deep Gold (darker gold for text): approx oklch(0.60 0.10 78) */
+    --gold-deep: 0.60 0.10 78;
+
+    /* ── shadcn semantic tokens ── */
+    --background: 0.96 0.018 90;
+    --foreground: 0.20 0.05 155;
+    --card: 0.98 0.010 90;
+    --card-foreground: 0.20 0.05 155;
+    --popover: 0.98 0.010 90;
+    --popover-foreground: 0.20 0.05 155;
+    --primary: 0.26 0.08 155;
+    --primary-foreground: 0.96 0.018 90;
+    --secondary: 0.91 0.025 148;
+    --secondary-foreground: 0.26 0.08 155;
+    --muted: 0.91 0.025 148;
+    --muted-foreground: 0.45 0.04 155;
+    --accent: 0.72 0.10 80;
+    --accent-foreground: 0.20 0.05 80;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.88 0.020 148;
+    --input: 0.88 0.020 148;
+    --ring: 0.72 0.10 80;
+    --chart-1: 0.646 0.222 41.116;
+    --chart-2: 0.6 0.118 184.704;
+    --chart-3: 0.398 0.07 227.392;
+    --chart-4: 0.828 0.189 84.429;
+    --chart-5: 0.769 0.188 70.08;
+    --sidebar: 0.96 0.018 90;
+    --sidebar-foreground: 0.20 0.05 155;
+    --sidebar-primary: 0.26 0.08 155;
+    --sidebar-primary-foreground: 0.96 0.018 90;
+    --sidebar-accent: 0.91 0.025 148;
+    --sidebar-accent-foreground: 0.26 0.08 155;
+    --sidebar-border: 0.88 0.020 148;
+    --sidebar-ring: 0.72 0.10 80;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+/* ── Custom Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes floatLeaf {
+  0%   { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+  33%  { transform: translateY(-30px) rotate(8deg); opacity: 0.8; }
+  66%  { transform: translateY(-15px) rotate(-5deg); opacity: 0.5; }
+  100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+}
+
+@keyframes floatLeafAlt {
+  0%   { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.4; }
+  50%  { transform: translateY(-40px) rotate(-10deg) scale(1.1); opacity: 0.7; }
+  100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.4; }
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(198, 168, 91, 0.5); }
+  70%  { box-shadow: 0 0 0 12px rgba(198, 168, 91, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(198, 168, 91, 0); }
+}
+
+@keyframes pulse-whatsapp {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@keyframes goldUnderlineExpand {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes scrollProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@keyframes ripple {
+  from { transform: scale(0); opacity: 0.6; }
+  to   { transform: scale(4); opacity: 0; }
+}
+
+/* ── Utility Classes ── */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.leaf-1 { animation: floatLeaf 6s ease-in-out infinite; }
+.leaf-2 { animation: floatLeafAlt 8s ease-in-out infinite 1s; }
+.leaf-3 { animation: floatLeaf 10s ease-in-out infinite 2s; }
+.leaf-4 { animation: floatLeafAlt 7s ease-in-out infinite 3s; }
+.leaf-5 { animation: floatLeaf 9s ease-in-out infinite 0.5s; }
+
+.btn-pulse {
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.btn-whatsapp-pulse {
+  animation: pulse-whatsapp 2s ease-out infinite;
+}
+
+.cart-panel-enter {
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.gold-underline-animate::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: oklch(var(--gold));
+  width: 0;
+  margin-top: 0.5rem;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gold-underline-animate.visible::after {
+  width: 80px;
+}
+
+.scroll-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.scroll-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(15, 61, 46, 0.18);
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.06);
+}
+
+.product-image {
+  transition: transform 0.5s ease;
+}
+
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 32px rgba(15, 61, 46, 0.14);
+}
+
+/* Ripple Button */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple .ripple-span {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  pointer-events: none;
+  animation: ripple 0.6s linear;
+}
+
+/* Navbar transition */
+.navbar-transparent {
+  background: transparent;
+  box-shadow: none;
+}
+
+.navbar-solid {
+  background: oklch(var(--forest));
+  box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+}
+
+/* Gold section divider */
+.gold-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(var(--gold)), transparent);
+}
+
+/* Review Card */
+.review-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Scroll progress bar */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, oklch(var(--gold)), oklch(0.85 0.12 80));
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
