@@ -34,6 +34,7 @@ const PRODUCTS: Product[] = [
   { id: 6, name: "Mangosteen Natural Soap", image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.29-PM-6.jpeg", price: 80 },
   { id: 7, name: "Kuppamieni Natural Soap", image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.28-PM-2--7.jpeg", price: 80 },
   { id: 8, name: "Charcoal & Sage Natural Soap", image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.28-PM-8.jpeg", price: 80 },
+  { id: 9, name: "Aloe Vera Natural Soap", image: "/assets/uploads/WhatsApp-Image-2026-02-27-at-12.35.07-AM-1.jpeg", price: 80 },
 ];
 
 // ─── Scroll Observer Hook ────────────────────────────────────────────────────
@@ -125,12 +126,24 @@ interface NavbarProps {
 function Navbar({ cartCount, onCartOpen }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoZoom, setLogoZoom] = useState(false);
+  const logoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (logoZoom) return;
+    setLogoZoom(true);
+    if (logoTimerRef.current) clearTimeout(logoTimerRef.current);
+    logoTimerRef.current = setTimeout(() => {
+      setLogoZoom(false);
+    }, 3000);
+  };
 
   const navLinks = [
     { label: "Home", href: "#home" },
@@ -149,9 +162,40 @@ function Navbar({ cartCount, onCartOpen }: NavbarProps) {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-16 md:h-20">
         {/* Brand */}
-        <a href="#home" className="font-serif font-semibold tracking-widest" style={{ color: "oklch(var(--gold))", fontSize: "clamp(1rem, 2.5vw, 1.4rem)", letterSpacing: "0.15em" }}>
-          AMALA ORGANICS
+        <a href="#home" className="flex items-center gap-3" onClick={handleLogoClick}>
+          <img
+            src="/assets/uploads/IMG_20260223_103137.jpg-1.jpeg"
+            alt="Amala Organics Logo"
+            className="w-10 h-10 rounded-full object-cover cursor-pointer"
+            style={{ border: "1.5px solid oklch(var(--gold) / 0.7)" }}
+          />
+          <span className="font-serif font-semibold" style={{ color: "oklch(var(--gold))", fontSize: "clamp(0.8rem, 3.5vw, 1.4rem)", letterSpacing: "0.08em", maxWidth: "calc(100vw - 160px)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "block" }}>
+            AMALA ORGANICS
+          </span>
         </a>
+
+        {/* Logo zoom overlay */}
+        {logoZoom && (
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center"
+            style={{ background: "rgba(15,61,46,0.85)", backdropFilter: "blur(6px)", animation: "fadeIn 0.3s ease" }}
+            onClick={() => setLogoZoom(false)}
+          >
+            <div style={{ animation: "logoZoomIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards" }}>
+              <img
+                src="/assets/uploads/IMG_20260223_103137.jpg-1.jpeg"
+                alt="Amala Organics Logo"
+                className="rounded-full object-cover shadow-2xl"
+                style={{
+                  width: "min(280px, 70vw)",
+                  height: "min(280px, 70vw)",
+                  border: "4px solid oklch(var(--gold))",
+                  boxShadow: "0 0 60px oklch(var(--gold) / 0.5), 0 20px 60px rgba(0,0,0,0.4)",
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -388,7 +432,7 @@ function AboutSection() {
           naturally — free from chemicals, rich in tradition, and worthy of trust.
         </p>
 
-        <div className="flex justify-center gap-12 mt-14">
+        <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-14">
           {[
             { num: "100%", label: "Natural" },
             { num: "8+", label: "Varieties" },
@@ -492,12 +536,12 @@ function ProductCard({ product, onAddToCart, visible, delay }: ProductCardProps)
         transitionDelay: `${delay}s`,
       }}
     >
-      {/* Image */}
-      <div className="overflow-hidden" style={{ aspectRatio: "1 / 1" }}>
+      {/* Image — padding-top trick for universal mobile support */}
+      <div className="overflow-hidden relative w-full" style={{ paddingTop: "100%" }}>
         <img
           src={product.image}
           alt={product.name}
-          className="product-image w-full h-full object-cover"
+          className="product-image absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
       </div>
@@ -1307,9 +1351,17 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <h3 className="font-serif text-3xl font-light tracking-widest mb-4" style={{ color: "oklch(var(--gold))" }}>
-              AMALA<br />ORGANICS
-            </h3>
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src="/assets/uploads/IMG_20260223_103137.jpg-1.jpeg"
+                alt="Amala Organics Logo"
+                className="w-16 h-16 rounded-full object-cover"
+                style={{ border: "2px solid oklch(var(--gold) / 0.6)" }}
+              />
+              <h3 className="font-serif text-3xl font-light tracking-widest" style={{ color: "oklch(var(--gold))" }}>
+                AMALA<br />ORGANICS
+              </h3>
+            </div>
             <p className="font-sans text-sm leading-relaxed" style={{ color: "oklch(var(--cream) / 0.65)" }}>
               Pure luxury herbal soaps handcrafted with love, rooted in nature's ancient wisdom.
             </p>
@@ -1379,14 +1431,6 @@ function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-sans text-xs tracking-wider" style={{ color: "oklch(var(--cream) / 0.45)" }}>
             © 2026 AMALA ORGANICS · All Rights Reserved
-          </p>
-          <p className="font-sans text-xs" style={{ color: "oklch(var(--cream) / 0.35)" }}>
-            Built with{" "}
-            <span style={{ color: "oklch(var(--gold))" }}>♥</span>
-            {" "}using{" "}
-            <a href="https://caffeine.ai" target="_blank" rel="noopener noreferrer" className="hover:opacity-80" style={{ color: "oklch(var(--gold) / 0.8)" }}>
-              caffeine.ai
-            </a>
           </p>
         </div>
       </div>

@@ -262,3 +262,37 @@
   z-index: 9999;
   transition: width 0.1s linear;
 }
+
+/* iOS momentum scrolling for panels and modals */
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure product image containers always have height on all devices */
+.product-img-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.product-img-wrap img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Logo zoom animation */
+@keyframes logoZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
