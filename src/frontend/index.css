@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,19 +8,19 @@
   :root {
     --radius: 0.5rem;
 
-    /* ── Amala Organics Brand Tokens (OKLCH L C H) ── */
-    /* Deep Forest Green: #0f3d2e → approx oklch(0.26 0.08 155) */
+    /* Kishore Organic Soaps — Brand Tokens (OKLCH L C H) */
+    /* Deep Forest Green: #0f3d2e */
     --forest: 0.26 0.08 155;
-    /* Soft Cream: #f5f1e8 → approx oklch(0.96 0.018 90) */
+    /* Soft Cream: #f5f1e8 */
     --cream: 0.96 0.018 90;
-    /* Gold Accent: #c6a85b → approx oklch(0.72 0.10 80) */
+    /* Gold Accent: #c6a85b */
     --gold: 0.72 0.10 80;
-    /* Light Sage: #dfe8dc → approx oklch(0.91 0.025 148) */
+    /* Light Sage: #dfe8dc */
     --sage: 0.91 0.025 148;
-    /* Deep Gold (darker gold for text): approx oklch(0.60 0.10 78) */
-    --gold-deep: 0.60 0.10 78;
+    /* Deep Gold (darker, for text): approx #8a6e2a */
+    --gold-deep: 0.55 0.09 78;
 
-    /* ── shadcn semantic tokens ── */
+    /* shadcn semantic tokens */
     --background: 0.96 0.018 90;
     --foreground: 0.20 0.05 155;
     --card: 0.98 0.010 90;
@@ -56,243 +56,104 @@
   }
 
   * {
-    @apply border-border;
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
+    border-color: oklch(var(--border));
   }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    @apply bg-background text-foreground;
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3, h4 {
-    font-family: 'Cormorant Garamond', serif;
+    background-color: oklch(var(--background));
+    color: oklch(var(--foreground));
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-/* ── Custom Animations ── */
+/* Leaf float animation */
+@keyframes leafFloat {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+  50% { transform: translateY(-30px) rotate(10deg); opacity: 0.6; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+}
+
+@keyframes leafDrift {
+  0% { transform: translateY(0) rotate(-5deg); opacity: 0.3; }
+  60% { transform: translateY(-20px) rotate(5deg); opacity: 0.5; }
+  100% { transform: translateY(0) rotate(-5deg); opacity: 0.3; }
+}
+
+.leaf-1 { animation: leafFloat 6s ease-in-out infinite; }
+.leaf-2 { animation: leafDrift 8s ease-in-out infinite; }
+.leaf-3 { animation: leafFloat 7s ease-in-out infinite 1s; }
+.leaf-4 { animation: leafDrift 9s ease-in-out infinite 2s; }
+.leaf-5 { animation: leafFloat 5s ease-in-out infinite 0.5s; }
+
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+.fade-in-up {
+  animation: fadeInUp 0.7s ease-out both;
 }
 
-@keyframes floatLeaf {
-  0%   { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
-  33%  { transform: translateY(-30px) rotate(8deg); opacity: 0.8; }
-  66%  { transform: translateY(-15px) rotate(-5deg); opacity: 0.5; }
-  100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+.fade-in-up-delay-1 { animation-delay: 0.1s; }
+.fade-in-up-delay-2 { animation-delay: 0.2s; }
+.fade-in-up-delay-3 { animation-delay: 0.3s; }
+
+/* Gold divider */
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, oklch(var(--gold)), transparent);
 }
 
-@keyframes floatLeafAlt {
-  0%   { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.4; }
-  50%  { transform: translateY(-40px) rotate(-10deg) scale(1.1); opacity: 0.7; }
-  100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.4; }
+/* Cart slide panel */
+.cart-panel {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes pulse-ring {
-  0%   { box-shadow: 0 0 0 0 rgba(198, 168, 91, 0.5); }
-  70%  { box-shadow: 0 0 0 12px rgba(198, 168, 91, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(198, 168, 91, 0); }
+.cart-panel-open {
+  transform: translateX(0);
 }
 
-@keyframes pulse-whatsapp {
-  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-  70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+.cart-panel-closed {
+  transform: translateX(100%);
 }
 
-@keyframes goldUnderlineExpand {
-  from { width: 0; }
-  to   { width: 100%; }
+/* Mobile cart bottom sheet */
+@media (max-width: 767px) {
+  .cart-panel {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .cart-panel-open {
+    transform: translateY(0);
+  }
+  .cart-panel-closed {
+    transform: translateY(100%);
+  }
 }
 
-@keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
+/* Logo zoom overlay */
+@keyframes logoZoomIn {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
-@keyframes scrollProgress {
-  from { width: 0%; }
-  to   { width: 100%; }
+.logo-zoom-animate {
+  animation: logoZoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-@keyframes ripple {
-  from { transform: scale(0); opacity: 0.6; }
-  to   { transform: scale(4); opacity: 0; }
-}
-
-/* ── Utility Classes ── */
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s ease forwards;
-}
-
-.leaf-1 { animation: floatLeaf 6s ease-in-out infinite; }
-.leaf-2 { animation: floatLeafAlt 8s ease-in-out infinite 1s; }
-.leaf-3 { animation: floatLeaf 10s ease-in-out infinite 2s; }
-.leaf-4 { animation: floatLeafAlt 7s ease-in-out infinite 3s; }
-.leaf-5 { animation: floatLeaf 9s ease-in-out infinite 0.5s; }
-
-.btn-pulse {
-  animation: pulse-ring 2s ease-out infinite;
-}
-
-.btn-whatsapp-pulse {
-  animation: pulse-whatsapp 2s ease-out infinite;
-}
-
-.cart-panel-enter {
-  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.gold-underline-animate::after {
-  content: '';
-  display: block;
-  height: 2px;
-  background: oklch(var(--gold));
-  width: 0;
-  margin-top: 0.5rem;
-  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gold-underline-animate.visible::after {
-  width: 80px;
-}
-
-.scroll-visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.scroll-hidden {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
+/* Product card always visible */
 .product-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none;
 }
 
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(15, 61, 46, 0.18);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(15, 61, 46, 0.18);
 }
 
-.product-card:hover .product-image {
-  transform: scale(1.06);
-}
-
-.product-image {
-  transition: transform 0.5s ease;
-}
-
-.feature-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 32px rgba(15, 61, 46, 0.14);
-}
-
-/* Ripple Button */
-.btn-ripple {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-ripple .ripple-span {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  pointer-events: none;
-  animation: ripple 0.6s linear;
-}
-
-/* Navbar transition */
-.navbar-transparent {
-  background: transparent;
-  box-shadow: none;
-}
-
-.navbar-solid {
-  background: oklch(var(--forest));
-  box-shadow: 0 2px 20px rgba(0,0,0,0.25);
-}
-
-/* Gold section divider */
-.gold-divider {
-  border: none;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, oklch(var(--gold)), transparent);
-}
-
-/* Review Card */
-.review-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.review-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-}
-
-/* Scroll progress bar */
-#scroll-progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, oklch(var(--gold)), oklch(0.85 0.12 80));
-  z-index: 9999;
-  transition: width 0.1s linear;
-}
-
-/* iOS momentum scrolling for panels and modals */
-.overflow-y-auto {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Ensure product image containers always have height on all devices */
-.product-img-wrap {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  overflow: hidden;
-}
-
-.product-img-wrap img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Logo zoom animation */
-@keyframes logoZoomIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: oklch(var(--cream)); }
+::-webkit-scrollbar-thumb { background: oklch(var(--forest)); border-radius: 3px; }

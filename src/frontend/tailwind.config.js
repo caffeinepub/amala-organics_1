@@ -16,7 +16,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["'Cormorant Garamond'", "Georgia", "serif"],
+        serif: ["'Playfair Display'", "Georgia", "serif"],
         sans: ["'DM Sans'", "system-ui", "sans-serif"],
       },
       colors: {
@@ -70,7 +70,6 @@ export default {
           border: "oklch(var(--sidebar-border))",
           ring: "oklch(var(--sidebar-ring))",
         },
-        // Brand tokens
         forest: "oklch(var(--forest))",
         cream: "oklch(var(--cream))",
         gold: "oklch(var(--gold))",
