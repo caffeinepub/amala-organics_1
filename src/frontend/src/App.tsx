@@ -620,19 +620,7 @@ export default function App() {
               <a
                 href="#products"
                 data-ocid="hero.primary_button"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  backgroundColor: "#c6a85b",
-                  color: "#0f3d2e",
-                  padding: "12px 28px",
-                  borderRadius: 8,
-                  fontWeight: 600,
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                  boxShadow: "0 4px 16px rgba(198,168,91,0.35)",
-                }}
+                className="btn-hero-primary"
               >
                 Shop Now
               </a>
@@ -641,18 +629,7 @@ export default function App() {
                 target="_blank"
                 rel="noreferrer"
                 data-ocid="hero.secondary_button"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  border: "1px solid rgba(198,168,91,0.5)",
-                  color: "#f5f1e8",
-                  padding: "12px 28px",
-                  borderRadius: 8,
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                }}
+                className="btn-hero-secondary"
               >
                 <MessageCircle size={16} /> WhatsApp Us
               </a>
@@ -674,18 +651,7 @@ export default function App() {
                 "No Chemicals",
                 "Eco-Friendly",
               ].map((b) => (
-                <span
-                  key={b}
-                  style={{
-                    border: "1px solid rgba(198,168,91,0.35)",
-                    color: "#c6a85b",
-                    padding: "5px 14px",
-                    borderRadius: 20,
-                    fontSize: "0.78rem",
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                  }}
-                >
+                <span key={b} className="hero-badge">
                   {b}
                 </span>
               ))}
@@ -738,13 +704,7 @@ export default function App() {
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-              gap: 24,
-            }}
-          >
+          <div className="products-grid">
             {PRODUCTS.map((product, idx) => (
               <ProductCard
                 key={product.id}
@@ -793,21 +753,16 @@ export default function App() {
               />
             </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-                gap: 24,
-              }}
-            >
+            <div className="reviews-grid">
               {REVIEWS.map((review, idx) => (
                 <div
                   key={review.id}
+                  className="review-card"
                   data-ocid={`reviews.item.${idx + 1}`}
                   style={{
                     backgroundColor: "rgba(255,255,255,0.06)",
                     border: "1px solid rgba(198,168,91,0.2)",
-                    borderRadius: 12,
+                    borderRadius: 14,
                     padding: 28,
                   }}
                 >
@@ -868,13 +823,14 @@ export default function App() {
               {TRUST_BADGES.map((b) => (
                 <div
                   key={b.label}
+                  className="trust-badge"
                   style={{
                     display: "flex",
                     alignItems: "center",
                     gap: 10,
                     backgroundColor: "rgba(198,168,91,0.1)",
                     border: "1px solid rgba(198,168,91,0.25)",
-                    borderRadius: 8,
+                    borderRadius: 10,
                     padding: "10px 20px",
                   }}
                 >
@@ -934,14 +890,15 @@ export default function App() {
             }}
           >
             <div
+              className="contact-card"
               style={{
                 flex: "1 1 260px",
                 maxWidth: 320,
                 backgroundColor: "white",
-                borderRadius: 12,
-                padding: 28,
+                borderRadius: 14,
+                padding: 32,
                 boxShadow: "0 8px 32px rgba(15,61,46,0.1)",
-                border: "1px solid rgba(198,168,91,0.2)",
+                border: "1px solid rgba(198,168,91,0.22)",
               }}
             >
               <MapPin
@@ -973,14 +930,15 @@ export default function App() {
               </p>
             </div>
             <div
+              className="contact-card"
               style={{
                 flex: "1 1 260px",
                 maxWidth: 320,
                 backgroundColor: "white",
-                borderRadius: 12,
-                padding: 28,
+                borderRadius: 14,
+                padding: 32,
                 boxShadow: "0 8px 32px rgba(15,61,46,0.1)",
-                border: "1px solid rgba(198,168,91,0.2)",
+                border: "1px solid rgba(198,168,91,0.22)",
               }}
             >
               <Phone size={28} style={{ color: "#c6a85b", marginBottom: 12 }} />
@@ -1007,14 +965,15 @@ export default function App() {
               </a>
             </div>
             <div
+              className="contact-card"
               style={{
                 flex: "1 1 260px",
                 maxWidth: 320,
                 backgroundColor: "white",
-                borderRadius: 12,
-                padding: 28,
+                borderRadius: 14,
+                padding: 32,
                 boxShadow: "0 8px 32px rgba(15,61,46,0.1)",
-                border: "1px solid rgba(198,168,91,0.2)",
+                border: "1px solid rgba(198,168,91,0.22)",
               }}
             >
               <MessageCircle
@@ -1355,13 +1314,14 @@ export default function App() {
                 <div
                   key={item.id}
                   data-ocid={`cart.item.${idx + 1}`}
+                  className="cart-item"
                   style={{
                     display: "flex",
                     gap: 12,
                     alignItems: "center",
                     padding: 12,
-                    borderRadius: 8,
-                    border: "1px solid #e8e4dc",
+                    borderRadius: 10,
+                    border: "1px solid rgba(198,168,91,0.2)",
                     backgroundColor: "#fdfaf4",
                   }}
                 >
@@ -1522,22 +1482,8 @@ export default function App() {
               <button
                 type="button"
                 data-ocid="cart.primary_button"
+                className="btn-whatsapp"
                 onClick={() => setOrderFormOpen(true)}
-                style={{
-                  width: "100%",
-                  padding: "13px",
-                  backgroundColor: "#25D366",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 8,
-                  fontWeight: 700,
-                  fontSize: "0.95rem",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                }}
               >
                 <MessageCircle size={18} /> Place Order via WhatsApp
               </button>
@@ -1927,16 +1873,7 @@ export default function App() {
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
-    <a
-      data-ocid="nav.link"
-      href={href}
-      style={{
-        color: "#dfe8dc",
-        fontSize: "0.875rem",
-        letterSpacing: "0.05em",
-        textDecoration: "none",
-      }}
-    >
+    <a data-ocid="nav.link" href={href} className="nav-link">
       {label}
     </a>
   );
@@ -1952,17 +1889,7 @@ function FooterSocial({
       href={href}
       data-ocid="footer.link"
       aria-label={label}
-      style={{
-        width: 38,
-        height: 38,
-        borderRadius: 8,
-        border: "1px solid rgba(198,168,91,0.3)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#dfe8dc",
-        textDecoration: "none",
-      }}
+      className="footer-social"
     >
       <Icon size={16} />
     </a>
@@ -1985,46 +1912,10 @@ function ProductCard({
   onAddToCart,
 }: ProductCardProps) {
   return (
-    <div
-      className="product-card"
-      data-ocid={`products.item.${idx + 1}`}
-      style={{
-        backgroundColor: "white",
-        borderRadius: 12,
-        overflow: "hidden",
-        border: "1px solid #e8e4dc",
-        boxShadow: "0 4px 16px rgba(15,61,46,0.06)",
-        transition: "transform 0.25s ease, box-shadow 0.25s ease",
-        display: "flex",
-        flexDirection: "column",
-        opacity: 1,
-        visibility: "visible",
-      }}
-    >
+    <div className="product-card" data-ocid={`products.item.${idx + 1}`}>
       {/* Image using padding-top trick for guaranteed rendering on all browsers */}
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          paddingTop: "75%",
-          overflow: "hidden",
-          backgroundColor: "#f0ede4",
-        }}
-      >
-        <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
+      <div className="product-img-wrap">
+        <img src={product.image} alt={product.name} loading="lazy" />
       </div>
 
       <div className="gold-divider" />
@@ -2077,26 +1968,14 @@ function ProductCard({
             style={{
               display: "flex",
               alignItems: "center",
-              border: "1px solid #dfe8dc",
-              borderRadius: 6,
-              overflow: "hidden",
+              gap: 4,
             }}
           >
             <button
               type="button"
               data-ocid={`products.secondary_button.${idx + 1}`}
+              className="qty-btn"
               onClick={() => onQtyChange(qty - 1)}
-              style={{
-                width: 32,
-                height: 32,
-                border: "none",
-                backgroundColor: "#f5f1e8",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#0f3d2e",
-              }}
             >
               <Minus size={12} />
             </button>
@@ -2114,18 +1993,8 @@ function ProductCard({
             <button
               type="button"
               data-ocid={`products.primary_button.${idx + 1}`}
+              className="qty-btn"
               onClick={() => onQtyChange(qty + 1)}
-              style={{
-                width: 32,
-                height: 32,
-                border: "none",
-                backgroundColor: "#f5f1e8",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#0f3d2e",
-              }}
             >
               <Plus size={12} />
             </button>
@@ -2135,23 +2004,9 @@ function ProductCard({
         <button
           type="button"
           data-ocid={`products.primary_button.${idx + 1}`}
+          className="btn-add-cart"
           onClick={onAddToCart}
-          style={{
-            marginTop: "auto",
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#0f3d2e",
-            color: "#f5f1e8",
-            border: "none",
-            borderRadius: 8,
-            fontWeight: 600,
-            fontSize: "0.875rem",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-          }}
+          style={{ marginTop: "auto" }}
         >
           <ShoppingCart size={14} /> Add to Cart
         </button>
