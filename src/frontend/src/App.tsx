@@ -19,6 +19,7 @@ interface Product {
   name: string;
   price: number;
   image: string;
+  stock: number;
 }
 
 interface CartItem extends Product {
@@ -38,54 +39,63 @@ const PRODUCTS: Product[] = [
     name: "Multani Mitti Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.29-PM-1--1.jpeg",
+    stock: 20,
   },
   {
     id: 2,
     name: "Neem and Tulsi Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.30-PM-2--2.jpeg",
+    stock: 18,
   },
   {
     id: 3,
     name: "Goat Milk Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.28-PM-1--3.jpeg",
+    stock: 8,
   },
   {
     id: 4,
     name: "Sandalwood Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.30-PM-3--4.jpeg",
+    stock: 15,
   },
   {
     id: 5,
     name: "Nalangu Maavu Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.30-PM-5.jpeg",
+    stock: 12,
   },
   {
     id: 6,
     name: "Mangosteen Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.29-PM-6.jpeg",
+    stock: 7,
   },
   {
     id: 7,
     name: "Kuppamieni Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.28-PM-2--7.jpeg",
+    stock: 3,
   },
   {
     id: 8,
     name: "Charcoal and Sage Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-26-at-10.24.28-PM-8.jpeg",
+    stock: 2,
   },
   {
     id: 9,
     name: "Aloe Vera Natural Soap",
     price: 80,
     image: "/assets/uploads/WhatsApp-Image-2026-02-27-at-12.35.07-AM-1.jpeg",
+    stock: 0,
   },
 ];
 
@@ -134,6 +144,9 @@ const TRUST_BADGES = [
 export default function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [stockLevels, setStockLevels] = useState<Record<number, number>>(() =>
+    Object.fromEntries(PRODUCTS.map((p) => [p.id, p.stock])),
+  );
   const [cartOpen, setCartOpen] = useState(false);
   const [orderFormOpen, setOrderFormOpen] = useState(false);
   const [logoZoom, setLogoZoom] = useState(false);
@@ -176,7 +189,11 @@ export default function App() {
   const getQty = (id: number) => quantities[id] ?? 1;
 
   const setQty = (id: number, val: number) => {
-    setQuantities((prev) => ({ ...prev, [id]: Math.max(1, val) }));
+    const maxStock = stockLevels[id] ?? 0;
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: maxStock > 0 ? Math.max(1, Math.min(val, maxStock)) : 1,
+    }));
   };
 
   const addToCart = useCallback(
@@ -191,6 +208,10 @@ export default function App() {
         }
         return [...prev, { ...product, qty }];
       });
+      setStockLevels((prev) => ({
+        ...prev,
+        [product.id]: Math.max(0, (prev[product.id] ?? 0) - qty),
+      }));
       setCartOpen(true);
     },
     [quantities],
@@ -705,16 +726,29 @@ export default function App() {
           </div>
 
           <div className="products-grid">
-            {PRODUCTS.map((product, idx) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                qty={getQty(product.id)}
-                idx={idx}
-                onQtyChange={(val) => setQty(product.id, val)}
-                onAddToCart={() => addToCart(product)}
-              />
-            ))}
+            {PRODUCTS.map((product, idx) => {
+              const stock = stockLevels[product.id] ?? 0;
+              const badge =
+                stock === 0
+                  ? undefined
+                  : stock <= 5
+                    ? "Limited Stock"
+                    : product.id === 1 || product.id === 2
+                      ? "Best Seller"
+                      : undefined;
+              return (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  qty={getQty(product.id)}
+                  idx={idx}
+                  stock={stock}
+                  badge={badge}
+                  onQtyChange={(val) => setQty(product.id, val)}
+                  onAddToCart={() => addToCart(product)}
+                />
+              );
+            })}
           </div>
         </section>
 
@@ -1900,6 +1934,8 @@ interface ProductCardProps {
   product: Product;
   qty: number;
   idx: number;
+  stock: number;
+  badge?: string;
   onQtyChange: (val: number) => void;
   onAddToCart: () => void;
 }
@@ -1908,14 +1944,37 @@ function ProductCard({
   product,
   qty,
   idx,
+  stock,
+  badge,
   onQtyChange,
   onAddToCart,
 }: ProductCardProps) {
   return (
     <div className="product-card" data-ocid={`products.item.${idx + 1}`}>
       {/* Image using padding-top trick for guaranteed rendering on all browsers */}
-      <div className="product-img-wrap">
+      <div className="product-img-wrap" style={{ position: "relative" }}>
         <img src={product.image} alt={product.name} loading="lazy" />
+        {badge && (
+          <span
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              backgroundColor: badge === "Best Seller" ? "#c6a85b" : "#d97706",
+              color: badge === "Best Seller" ? "#0f3d2e" : "white",
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              padding: "3px 8px",
+              borderRadius: 20,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
+              zIndex: 2,
+            }}
+          >
+            {badge}
+          </span>
+        )}
       </div>
 
       <div className="gold-divider" />
@@ -1941,6 +2000,63 @@ function ProductCard({
         >
           {product.name}
         </h3>
+
+        {/* Stock Status */}
+        {stock === 0 ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "#dc2626",
+                flexShrink: 0,
+                display: "inline-block",
+              }}
+            />
+            <span
+              style={{ color: "#dc2626", fontSize: "0.78rem", fontWeight: 600 }}
+            >
+              Out of Stock
+            </span>
+          </div>
+        ) : stock <= 5 ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "#d97706",
+                flexShrink: 0,
+                display: "inline-block",
+              }}
+            />
+            <span
+              style={{ color: "#d97706", fontSize: "0.78rem", fontWeight: 600 }}
+            >
+              Hurry! Only {stock} left
+            </span>
+          </div>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "#2d7a4f",
+                flexShrink: 0,
+                display: "inline-block",
+              }}
+            />
+            <span
+              style={{ color: "#2d7a4f", fontSize: "0.78rem", fontWeight: 600 }}
+            >
+              In Stock
+            </span>
+          </div>
+        )}
 
         <div
           style={{
@@ -1976,6 +2092,8 @@ function ProductCard({
               data-ocid={`products.secondary_button.${idx + 1}`}
               className="qty-btn"
               onClick={() => onQtyChange(qty - 1)}
+              disabled={stock === 0}
+              style={{ opacity: stock === 0 ? 0.4 : 1 }}
             >
               <Minus size={12} />
             </button>
@@ -1995,6 +2113,8 @@ function ProductCard({
               data-ocid={`products.primary_button.${idx + 1}`}
               className="qty-btn"
               onClick={() => onQtyChange(qty + 1)}
+              disabled={stock === 0 || qty >= stock}
+              style={{ opacity: stock === 0 || qty >= stock ? 0.4 : 1 }}
             >
               <Plus size={12} />
             </button>
@@ -2005,10 +2125,16 @@ function ProductCard({
           type="button"
           data-ocid={`products.primary_button.${idx + 1}`}
           className="btn-add-cart"
-          onClick={onAddToCart}
-          style={{ marginTop: "auto" }}
+          onClick={stock > 0 ? onAddToCart : undefined}
+          disabled={stock === 0}
+          style={{
+            marginTop: "auto",
+            opacity: stock === 0 ? 0.5 : 1,
+            cursor: stock === 0 ? "not-allowed" : "pointer",
+          }}
         >
-          <ShoppingCart size={14} /> Add to Cart
+          <ShoppingCart size={14} />
+          {stock === 0 ? "Out of Stock" : "Add to Cart"}
         </button>
       </div>
     </div>
